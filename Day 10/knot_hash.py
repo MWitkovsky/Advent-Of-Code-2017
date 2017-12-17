@@ -7,7 +7,7 @@ def knot_hash(string):
     def reverse_section_circular(start, length):
         end = start + length-1
         length = math.floor(length/2)
-        if end > len(knot):
+        if end >= len(knot):
             end -= len(knot)
         while length > 0:
             knot[start], knot[end] = knot[end], knot[start]
