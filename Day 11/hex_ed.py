@@ -1,4 +1,4 @@
-import sys, re
+import sys
 from copy import deepcopy
 from collections import Counter
 
