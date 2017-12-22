@@ -7,40 +7,38 @@ def packet_scanners(string):
         line = line.split(": ")
         scanners[int(line[0])] = {}
         scanners[int(line[0])]["direction"] = 1
-        scanners[int(line[0])]["scanner"] = [None] * int(line[1])
-        scanners[int(line[0])]["scanner"][0] = "s"
+        scanners[int(line[0])]["len"] = int(line[1])-1
+        scanners[int(line[0])]["pos"] = 0
 
     severity = 0
     def timestep():
         for scanner in scanners.values():
-            scn = scanner["scanner"]
+            length = scanner["len"]
             dr = scanner["direction"]
-            i = scn.index("s")
-            scn[i] = None
-            scn[i+dr] = "s"
-            if i+dr in (0, len(scn)-1):
+            scanner["pos"] += dr
+            if scanner["pos"] in (0, length):
                 scanner["direction"] *= -1
 
     for i in range(max(scanners)):
         scanner = scanners.get(i)
-        if scanner and scanner["scanner"][0] == "s":
-            severity += i*len(scanner["scanner"])
+        if scanner and scanner["pos"] == 0:
+            severity += i*(scanner["len"]+1)
         timestep()
 
     print "Part 1 Solution: %s" % severity
 
     def reset_scanners():
         for scanner in scanners.values():
-            scn = scanner["scanner"]
-            scn[scn.index("s")] = None
-            scn[0] = "s"
             scanner["direction"] = 1
+            scanner["pos"] = 0
 
     start_picosecond = -1
     severity = 1
     reset_scanners()
     snapshot = deepcopy(scanners)
     while severity != 0:
+        if not start_picosecond % 1000:
+            print start_picosecond
         start_picosecond += 1
         scanners = deepcopy(snapshot)
         timestep()
@@ -48,9 +46,9 @@ def packet_scanners(string):
         severity = 0
         for i in range(max(scanners)):
             scanner = scanners.get(i)
-            if scanner and scanner["scanner"][0] == "s":
+            if scanner and scanner["pos"] == 0:
                 severity = 1
-                continue
+                break
             timestep()
 
     print "Part 2 Solution: %s" % start_picosecond
