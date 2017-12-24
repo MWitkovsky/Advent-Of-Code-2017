@@ -1,5 +1,4 @@
 import sys
-from copy import deepcopy
 
 def packet_scanners(string):
     scanners = {}
