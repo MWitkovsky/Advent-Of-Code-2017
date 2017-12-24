@@ -6,12 +6,17 @@ def safe_int(s):
     except ValueError:
         return None
 
+
 def perform_op(registers, instructions, pointer):
     instruction = instructions[pointer].split(" ")
-    if not registers.get(instruction[1]):
-        registers[instruction[1]] = 0
+    # if not registers.get(instruction[1]):
+    #     registers[instruction[1]] = 0
     if instruction[0] == "snd":
-        return "snd", registers.get(instruction[1], 0)
+        val = safe_int(instruction[1])
+        if val is not None:
+            return "snd", val
+        else:
+            return "snd", registers.get(instruction[1], 0)
     elif instruction[0] == "set":
         val = safe_int(instruction[2])
         if val is not None:
@@ -39,18 +44,27 @@ def perform_op(registers, instructions, pointer):
     elif instruction[0] == "rcv":
         return "rcv", instruction[1]
     elif instruction[0] == "jgz":
-        if registers[instruction[1]] > 0:
-            val = safe_int(instruction[2])
-            if val is not None:
-                return "jump", pointer + val
-            else:
-                return "jump", pointer + registers[instruction[2]]
+        val = safe_int(instruction[1])
+        if val is not None:
+            if val > 0:
+                val = safe_int(instruction[2])
+                if val is not None:
+                    return "jump", pointer + val
+                else:
+                    return "jump", pointer + registers[instruction[2]]
+        else:
+            if registers[instruction[1]] > 0:
+                val = safe_int(instruction[2])
+                if val is not None:
+                    return "jump", pointer + val
+                else:
+                    return "jump", pointer + registers[instruction[2]]
     return None, None
 
 
 def duet(string):
     instructions = string.splitlines()
-    registers = {}
+    registers = {"p":0}
     pointer = 0
     last_sound = -1
     while pointer >= 0 and pointer < len(instructions):
@@ -109,8 +123,6 @@ def duet(string):
 
         if program0["deadlocked"] and program1["deadlocked"] and deadlock_counter > 0:
             break
-        print program1_send_count
-
 
     print "Part 2 Solution: %s" % program1_send_count
 
