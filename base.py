@@ -3,13 +3,13 @@ sys.path.append("../")
 
 from lib import utils
 
-def process_input():
+def process_input(string):
     pass
 
-def part1():
+def part1(data):
     pass
 
-def part2():
+def part2(data):
     pass
 
 
