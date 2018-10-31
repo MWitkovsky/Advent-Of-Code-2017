@@ -1,16 +1,27 @@
 import sys
+sys.path.append("../")
+
+from lib import utils
+
+def process_input():
+    pass
+
+def part1():
+    pass
+
+def part2():
+    pass
+
 
 def problem(string):
-
-    # print "Part 1 Solution: %s" % num_matches
-    # print "Part 2 Solution: %s" % num_matches
+    data = process_input(string)
+    part1(data)
+    part2(data)
 
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         sys.exit()
 
-    f = open(sys.argv[1], "r")
-    inp = f.read()
-    f.close()
+    inp = utils.read_file_to_string_by_path(sys.argv[1])
     problem(inp)
