@@ -59,7 +59,7 @@ class FabricSnippet:
 
 
 
-def problem(inp):
+def no_matter_how_you_slice_it(inp):
     inp = utils.lines_to_array(inp)
     for i, line in enumerate(inp):
         fabric_snippets[i+1] = FabricSnippet(line)
@@ -74,4 +74,4 @@ if __name__ == "__main__":
         sys.exit()
 
     inp = utils.read_file_to_string_by_path(sys.argv[1])
-    problem(inp)
+    no_matter_how_you_slice_it(inp)

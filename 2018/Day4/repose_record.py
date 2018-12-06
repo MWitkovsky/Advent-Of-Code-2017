@@ -5,7 +5,7 @@ from lib import utils
 from collections import defaultdict, Counter
 
 
-def problem(inp):
+def repose_record(inp):
     duty_log = inp.splitlines()
     duty_log = sorted(duty_log, key=lambda x: x[:18])
 
@@ -49,4 +49,4 @@ if __name__ == "__main__":
         sys.exit()
 
     inp = utils.read_file_to_string_by_path(sys.argv[1])
-    problem(inp)
+    repose_record(inp)
