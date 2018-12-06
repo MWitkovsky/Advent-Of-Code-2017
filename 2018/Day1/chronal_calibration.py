@@ -4,19 +4,14 @@ sys.path.append("../../")
 from lib import utils
 
 
-def get_frequencies(string):
-    lines = string.splitlines()
-    for line in lines:
-        yield int(line)
-
-
 def analyize_frequencies(frequencies):
+    frequencies = [int(freq) for freq in utils.lines_to_array(frequencies)]
     freq_history = set()
     first_loop_freq = None
     first_duplicate_freq = None
     total_freq = 0
     while first_duplicate_freq is None:
-        for frequency in get_frequencies(frequencies):
+        for frequency in frequencies:
             total_freq += frequency
             if total_freq in freq_history:
                 first_duplicate_freq = total_freq
