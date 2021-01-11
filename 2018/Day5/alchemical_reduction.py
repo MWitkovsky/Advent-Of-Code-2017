@@ -1,41 +1,46 @@
-import sys
-sys.path.append("../../")
+# coding: utf-8
+# 自分の得意な言語で
+# Let's チャレンジ！！
 
-from lib import utils
-from collections import defaultdict, Counter
+def print_town(town):
+    for row in town:
+        print_row = ""
+        for val in row:
+            print_row += "{} ".format(val)
+        print(print_row)
 
+def fill_building_info(specs):
+    building = {
+        "id": i+1,
+        "height": specs[0],
+        "width": specs[1]
+    }
+    door_row = specs[2]
+    door_column = specs[3]
+    if door_row == 1:
+        building["door_facing"] = "N"
+    elif door_row == building["height"]:
+        building["door_facing"] = "S"
+    elif door_column == 1:
+        building["door_facing"] = "W"
+    else:
+        building["door_facing"] = "E"
+    return building
 
-def reduce_polymer(polymer):
-    stack = []
-    for char in polymer:
-        if not stack:
-            stack.append(char)
-        elif stack[len(stack)-1].lower() == char.lower() and\
-                stack[len(stack)-1] != char:
-            stack.pop()
-        else:
-            stack.append(char)
-    return "".join(stack)
+town_info = [int(i) for i in input().split(" ")]
+town = [[0 for i in range(town_info[1])] for j in range(town_info[0])]
 
+buildings = {}
+biggest_building = None
+biggest_building_score = -1
+for i in range(town_info[2]):
+    buildings[i] = fill_building_info([int(n) for n in input().split(" ")])
+    if buildings[i]["width"] * buildings[i]["height"] > biggest_building_score:
+        biggest_building = buildings[i]
+        biggest_building_score = buildings[i]["width"] * buildings[i]["height"]
 
-def alchemical_reduction(inp):
-    polymer = inp.splitlines()[0]
-    reduced = reduce_polymer(polymer)
+for i in range(biggest_building["height"]):
+    for j in range(biggest_building["width"]):
+        town[i][j] = biggest_building["id"]
 
-    print ("part 1: {0}".format(len(reduced)))
-
-    char_2_purified_reduced_polymer_length = {}
-    for i in range(65, 91, 1):
-        char = chr(i)
-        purified_polymer = polymer.replace(char, "").replace(char.lower(), "")
-        char_2_purified_reduced_polymer_length[char] = len(reduce_polymer(purified_polymer))
-
-    print ("part 2: {0}".format(sorted(char_2_purified_reduced_polymer_length.values())[0]))
-
-
-if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        sys.exit()
-
-    inp = utils.read_file_to_string_by_path(sys.argv[1])
-    alchemical_reduction(inp)
+print_town(town)

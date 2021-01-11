@@ -6,4 +6,4 @@ def read_file_to_string_by_path(path):
 
 
 def lines_to_array(string):
-    return [line for line in string.splitlines()]
+    return string.splitlines()
